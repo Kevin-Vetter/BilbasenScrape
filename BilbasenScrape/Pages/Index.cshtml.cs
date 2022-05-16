@@ -38,13 +38,8 @@ namespace BilbasenScrape.Pages
             xPaths.Add("//*[@id=\"bbVipEquipment\"]/ul/li");
 
 
-            
-
-
-
-            GetElementsFromPage(URL_1, xPaths);
-            GetElementsFromPage(URL_2, xPaths);
-
+            ElementsFromPage page1 = GetElementsFromPage(URL_1, xPaths);
+            ElementsFromPage page2 = GetElementsFromPage(URL_2, xPaths);
 
         }
 
@@ -52,7 +47,6 @@ namespace BilbasenScrape.Pages
         {
             var pageDetails = new ElementsFromPage();
             List<string> udstyr = new List<string>();
-
 
             var html = GetHtml(url);
             pageDetails.Title = html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[0]).InnerText;
@@ -65,7 +59,6 @@ namespace BilbasenScrape.Pages
             pageDetails.ModelAar = html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[7]).InnerText;
             pageDetails.Beskrivelse = html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[8]).InnerText;
             pageDetails.Udstyr = udstyr;
-
 
 
             var udstyrLi = html.CssSelect("li");
