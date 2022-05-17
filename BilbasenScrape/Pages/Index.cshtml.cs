@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HtmlAgilityPack;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
-using System.Collections.Generic;
-using HtmlAgilityPack;
 using ScrapySharp.Extensions;
 using ScrapySharp.Network;
 
@@ -45,25 +43,26 @@ namespace BilbasenScrape.Pages
 
         static ElementsFromPage GetElementsFromPage(string url, List<string> xPaths)
         {
-            var pageDetails = new ElementsFromPage();
             List<string> udstyr = new List<string>();
 
-            var html = GetHtml(url);
-            pageDetails.Title = html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[0]).InnerText;
-            pageDetails.Pris = html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[1]).InnerText;
-            pageDetails.Km = html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[2]).InnerText;
-            pageDetails.BrændstofType = html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[3]).InnerText;
-            pageDetails.KmPrL = html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[4]).InnerText;
-            pageDetails.v3 = html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[5]).InnerText;
-            pageDetails.RegDato = html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[6]).InnerText;
-            pageDetails.ModelAar = html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[7]).InnerText;
-            pageDetails.Beskrivelse = html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[8]).InnerText;
-            pageDetails.Udstyr = udstyr;
+            HtmlNode? html = GetHtml(url);
+            ElementsFromPage? pageDetails = new ElementsFromPage(
+            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[0]).InnerText, //Title
+            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[1]).InnerText, //
+            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[2]).InnerText,
+            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[3]).InnerText,
+            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[4]).InnerText,
+            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[5]).InnerText,
+            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[6]).InnerText,
+            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[7]).InnerText,
+            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[8]).InnerText,
+            udstyr
+                );
 
 
-            var udstyrLi = html.CssSelect("li");
+            IEnumerable<HtmlNode>? udstyrLi = html.CssSelect("li");
 
-            foreach (var li in udstyrLi)
+            foreach (HtmlNode? li in udstyrLi)
             {
                 if (li.ParentNode.Attributes["class"] != null)
                 {
@@ -85,6 +84,33 @@ namespace BilbasenScrape.Pages
 
         public class ElementsFromPage
         {
+            /// <summary>
+            /// Contains all elements extraced from an html page
+            /// </summary>
+            /// <param name="title"></param>
+            /// <param name="pris"></param>
+            /// <param name="km"></param>
+            /// <param name="brændstofType"></param>
+            /// <param name="kmPrL"></param>
+            /// <param name="v3"></param>
+            /// <param name="regDato"></param>
+            /// <param name="modelAar"></param>
+            /// <param name="beskrivelse"></param>
+            /// <param name="udstyr"></param>
+            public ElementsFromPage(string title, string pris, string km, string brændstofType, string kmPrL, string v3, string regDato, string modelAar, string beskrivelse, List<string> udstyr)
+            {
+                Title = title;
+                Pris = pris;
+                Km = km;
+                BrændstofType = brændstofType;
+                KmPrL = kmPrL;
+                this.v3 = v3;
+                RegDato = regDato;
+                ModelAar = modelAar;
+                Beskrivelse = beskrivelse;
+                Udstyr = udstyr;
+            }
+
             public string Title { get; set; }
             public string Pris { get; set; }
             public string Km { get; set; }
@@ -93,7 +119,6 @@ namespace BilbasenScrape.Pages
             public string v3 { get; set; }
             public string RegDato { get; set; }
             public string ModelAar { get; set; }
-            public string v6 { get; set; }
             public string Beskrivelse { get; set; }
             public List<string> Udstyr { get; set; }
         }
