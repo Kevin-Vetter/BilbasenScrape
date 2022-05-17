@@ -44,22 +44,7 @@ namespace BilbasenScrape.Pages
         static ElementsFromPage GetElementsFromPage(string url, List<string> xPaths)
         {
             List<string> udstyr = new List<string>();
-
             HtmlNode? html = GetHtml(url);
-            ElementsFromPage? pageDetails = new ElementsFromPage(
-            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[0]).InnerText, //Title
-            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[1]).InnerText, //
-            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[2]).InnerText,
-            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[3]).InnerText,
-            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[4]).InnerText,
-            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[5]).InnerText,
-            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[6]).InnerText,
-            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[7]).InnerText,
-            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[8]).InnerText,
-            udstyr
-                );
-
-
             IEnumerable<HtmlNode>? udstyrLi = html.CssSelect("li");
 
             foreach (HtmlNode? li in udstyrLi)
@@ -72,6 +57,20 @@ namespace BilbasenScrape.Pages
                     }
                 }
             }
+
+            ElementsFromPage? pageDetails = new ElementsFromPage(
+            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[0]).InnerText, //title
+            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[1]).InnerText, //pris
+            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[2]).InnerText, //km
+            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[3]).InnerText, //brændstOfType
+            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[4]).InnerText, //kmPrL
+            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[6]).InnerText, //regDato
+            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[7]).InnerText, //modelAar
+            html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[8]).InnerText, //beskrivelse
+            udstyr                                                                 //udstyr
+                );
+
+
 
             return pageDetails;
         }
@@ -90,21 +89,19 @@ namespace BilbasenScrape.Pages
             /// <param name="title"></param>
             /// <param name="pris"></param>
             /// <param name="km"></param>
-            /// <param name="brændstofType"></param>
+            /// <param name="brændstOfType"></param>
             /// <param name="kmPrL"></param>
-            /// <param name="v3"></param>
             /// <param name="regDato"></param>
             /// <param name="modelAar"></param>
             /// <param name="beskrivelse"></param>
             /// <param name="udstyr"></param>
-            public ElementsFromPage(string title, string pris, string km, string brændstofType, string kmPrL, string v3, string regDato, string modelAar, string beskrivelse, List<string> udstyr)
+            public ElementsFromPage(string title, string pris, string km, string brændstOfType, string kmPrL, string regDato, string modelAar, string beskrivelse, List<string> udstyr)
             {
                 Title = title;
                 Pris = pris;
                 Km = km;
-                BrændstofType = brændstofType;
+                BrændstofType = brændstOfType;
                 KmPrL = kmPrL;
-                this.v3 = v3;
                 RegDato = regDato;
                 ModelAar = modelAar;
                 Beskrivelse = beskrivelse;
@@ -116,7 +113,6 @@ namespace BilbasenScrape.Pages
             public string Km { get; set; }
             public string BrændstofType { get; set; }
             public string KmPrL { get; set; }
-            public string v3 { get; set; }
             public string RegDato { get; set; }
             public string ModelAar { get; set; }
             public string Beskrivelse { get; set; }
