@@ -1,8 +1,10 @@
 ﻿using HtmlAgilityPack;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Http;
 using ScrapySharp.Extensions;
 using ScrapySharp.Network;
+using System.Text;
 
 namespace BilbasenScrape.Pages
 {
@@ -17,9 +19,10 @@ namespace BilbasenScrape.Pages
 
         public void OnGet()
         {
+
         }
 
-        public void OnPost()
+        public IActionResult OnPost()
         {
             List<string> xPaths = new List<string>();
             xPaths.Add("//*[@id=\"bbVipTitle\"]");
@@ -37,7 +40,9 @@ namespace BilbasenScrape.Pages
 
 
             ElementsFromPage page1 = GetElementsFromPage(URL_1, xPaths);
-            ElementsFromPage page2 = GetElementsFromPage(URL_2, xPaths);
+            //ElementsFromPage page2 = GetElementsFromPage(URL_2, xPaths);
+
+            return RedirectToPage("Samligning", page1);
 
         }
 
@@ -67,10 +72,10 @@ namespace BilbasenScrape.Pages
             html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[6]).InnerText, //regDato
             html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[7]).InnerText, //modelAar
             html.OwnerDocument.DocumentNode.SelectSingleNode(xPaths[8]).InnerText, //beskrivelse
-            udstyr                                                                 //udstyr
-                );
+            udstyr);                                                               //udstyr
 
 
+        
 
             return pageDetails;
         }
@@ -103,9 +108,14 @@ namespace BilbasenScrape.Pages
                 BrændstofType = brændstOfType;
                 KmPrL = kmPrL;
                 RegDato = regDato;
-                ModelAar = modelAar;
+                ModelÅr = modelAar;
                 Beskrivelse = beskrivelse;
                 Udstyr = udstyr;
+            }
+
+            public ElementsFromPage()
+            {
+
             }
 
             public string Title { get; set; }
@@ -114,7 +124,7 @@ namespace BilbasenScrape.Pages
             public string BrændstofType { get; set; }
             public string KmPrL { get; set; }
             public string RegDato { get; set; }
-            public string ModelAar { get; set; }
+            public string ModelÅr { get; set; }
             public string Beskrivelse { get; set; }
             public List<string> Udstyr { get; set; }
         }

@@ -1,0 +1,22 @@
+﻿@page
+@model BilbasenScrape.Pages.SamligningModel
+@{}
+@using System.Net;
+
+<p>@WebUtility.HtmlDecode(Model.Page1.Title)</p>
+<p>@Model.Page1.Pris</p>
+<p>@Model.Page1.Km</p>
+<p>@Model.Page1.BrændstofType</p>
+<p>@Model.Page1.KmPrL</p>
+<p>@Model.Page1.RegDato</p>
+<p>@Model.Page1.ModelÅr</p>
+<p>@WebUtility.HtmlDecode(Model.Page1.Beskrivelse)</p>
+<ul>
+    @foreach (string i in Model.Page1.Udstyr )
+    {
+
+        <li>@WebUtility.HtmlDecode(i)</li>
+    }
+</ul>  
+
+
